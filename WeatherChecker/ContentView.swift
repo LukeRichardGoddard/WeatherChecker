@@ -8,14 +8,21 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @State var weather = Weather()
+    var service = DataService()
+    
     var body: some View {
         VStack {
             Image(systemName: "globe")
                 .imageScale(.large)
                 .foregroundStyle(.tint)
-            Text("Hello, world!")
+            Text(weather.location?.country ?? "Loading")
         }
         .padding()
+        .task {
+            weather = await service.getWeather()
+        }
     }
 }
 
