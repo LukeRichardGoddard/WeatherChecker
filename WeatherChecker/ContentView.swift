@@ -14,10 +14,16 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
+            Text(weather.location?.name ?? "")
             Text(weather.location?.country ?? "Loading")
+            HStack (alignment: .top, spacing: 0) {
+                Text("\(weather.current?.temperature ?? 0)")
+                    .font(.largeTitle)
+                Text("°")
+                Text("C")
+                    .font(.largeTitle)
+            }
+            
         }
         .padding()
         .task {
