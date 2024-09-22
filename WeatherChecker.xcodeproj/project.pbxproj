@@ -14,6 +14,7 @@
 		C38B7BAF2C9E981D00CAD4A0 /* Weather.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38B7BAE2C9E981D00CAD4A0 /* Weather.swift */; };
 		C38B7BB12C9E9F9C00CAD4A0 /* WeatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38B7BB02C9E9F9C00CAD4A0 /* WeatherModel.swift */; };
 		C38B7BB32C9EA09D00CAD4A0 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38B7BB22C9EA09D00CAD4A0 /* DataService.swift */; };
+		C38B7BB52C9EAC9600CAD4A0 /* AsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38B7BB42C9EAC9600CAD4A0 /* AsyncImage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +28,7 @@
 		C38B7BAE2C9E981D00CAD4A0 /* Weather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weather.swift; sourceTree = "<group>"; };
 		C38B7BB02C9E9F9C00CAD4A0 /* WeatherModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherModel.swift; sourceTree = "<group>"; };
 		C38B7BB22C9EA09D00CAD4A0 /* DataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
+		C38B7BB42C9EAC9600CAD4A0 /* AsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncImage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +69,7 @@
 				C38B7BAD2C9E980A00CAD4A0 /* Model */,
 				C38B7BA32C9E948E00CAD4A0 /* Preview Content */,
 				C38B7BAB2C9E956600CAD4A0 /* Config.xcconfig */,
+				C38B7BB42C9EAC9600CAD4A0 /* AsyncImage.swift */,
 			);
 			path = WeatherChecker;
 			sourceTree = "<group>";
@@ -162,6 +165,7 @@
 				C38B7BAF2C9E981D00CAD4A0 /* Weather.swift in Sources */,
 				C38B7BB12C9E9F9C00CAD4A0 /* WeatherModel.swift in Sources */,
 				C38B7B9E2C9E948B00CAD4A0 /* WeatherChecker.swift in Sources */,
+				C38B7BB52C9EAC9600CAD4A0 /* AsyncImage.swift in Sources */,
 				C38B7BB32C9EA09D00CAD4A0 /* DataService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
