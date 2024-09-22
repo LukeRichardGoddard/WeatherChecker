@@ -12,6 +12,9 @@ struct ContentView: View {
     @State var weather = Weather()
     @State var units = ["Metric", "Farenheit", "Scientific"]
     @State var selectedUnits = 0
+    @State var useCurrentLocation = false
+    @State var searchText = ""
+    @FocusState var queryBoxFocused: Bool
     @State var showDetails = false
     var service = DataService()
     
@@ -90,6 +93,21 @@ struct ContentView: View {
             }
             Spacer()
             Section(header: Text("Weather Options")) {
+                Toggle(isOn: $useCurrentLocation) {
+                    Text("Use Current Location")
+                }
+                .padding(.horizontal)
+                
+                if !useCurrentLocation {
+                    HStack {
+                        Text("Location:")
+                        TextField("City", text: $searchText)
+                            .textFieldStyle(.roundedBorder)
+                            .focused($queryBoxFocused)
+                    }
+                    .padding(.horizontal)
+                }
+                
                 HStack {
                     Text("Units:")
                     Spacer()
@@ -108,7 +126,7 @@ struct ContentView: View {
             }
             Button {
                 Task {
-                    weather = await service.getWeather(unit: units[selectedUnits])
+                    weather = await service.getWeather(unit: units[selectedUnits], searchText: searchText)
                 }
             } label: {
                 Text("Get Weather")

@@ -11,15 +11,24 @@ struct DataService {
     
     let apiKey = Bundle.main.infoDictionary?["API_KEY"] as? String
     
-    func getWeather(unit: String) async -> Weather {
+    func getWeather(unit: String, searchText: String) async -> Weather {
         
         guard apiKey != nil else {
             return Weather()
         }
         
-        if let url = URL(string: "https://api.weatherstack.com/current?access_key=\(apiKey!)&query=-33.883,151.217&units=\(unit.lowercased().first ?? "m")") {
+        
+        var query = "-33.883,151.217"
+        
+        print(searchText)
+        
+        if searchText != "" {
+            query = searchText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        }
+        
+        if let url = URL(string: "https://api.weatherstack.com/current?access_key=\(apiKey!)&query=\(query)&units=\(unit.lowercased().first ?? "m")") {
             
-            var request = URLRequest(url: url)
+            let request = URLRequest(url: url)
             
             do {
                 let (data, response) = try await URLSession.shared.data(for: request)
