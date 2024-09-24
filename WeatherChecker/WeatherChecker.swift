@@ -12,6 +12,11 @@ struct WeatherChecker: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .fullScreenCover(isPresented: Binding.constant(true), onDismiss: {
+                    
+                }, content: {
+                    OnboardingView()
+                })
         }
     }
 }
