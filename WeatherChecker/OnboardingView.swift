@@ -14,7 +14,7 @@ struct OnboardingView: View {
                 
             })
             
-            OnboardingDetailsView(bgColor: Color.green, headline: "WeatherChecker", subHeadline: "Give the app permission to use your location", buttonAction: {
+            OnboardingDetailsView(bgColor: Color.indigo, headline: "WeatherChecker", subHeadline: "Give the app permission to use your location", buttonAction: {
                 
             })
         }
