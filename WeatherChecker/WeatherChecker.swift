@@ -10,6 +10,7 @@ import SwiftUI
 @main
 struct WeatherChecker: App {
     
+    @State var model = WeatherModel()
     @AppStorage("onboarding") var needsOnboarding = true
     
     var body: some Scene {
@@ -20,6 +21,7 @@ struct WeatherChecker: App {
                 }, content: {
                     OnboardingView()
                 })
+                .environment(model)
         }
     }
 }

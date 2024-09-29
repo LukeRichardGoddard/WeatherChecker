@@ -54,7 +54,7 @@ struct WeatherCurrent: Codable {
     var windDegree: Int?
     var windDir: String?
     var pressure: Int?
-    var precip: Int?
+    var precip: Double?
     var humidity: Int?
     var cloudcover: Int?
     var feelslike: Int?

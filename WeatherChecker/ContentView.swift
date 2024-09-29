@@ -9,29 +9,27 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State var weather = Weather()
-    @State var units = ["Metric", "Farenheit", "Scientific"]
-    @State var selectedUnits = 0
-    @State var useCurrentLocation = false
-    @State var searchText = ""
+    @Environment(WeatherModel.self) var model
+    
     @FocusState var queryBoxFocused: Bool
-    @State var showDetails = false
-    var service = DataService()
     
     var body: some View {
+        
+        @Bindable var model = model
+        
         VStack {
             Text("Weather Checker")
                 .font(.largeTitle)
-            if weather.request?.query != nil {
-                AsyncImage(url: URL(string: weather.current?.weatherIcons?.first ?? "https://cdn.worldweatheronline.com/images/wsymbols01_png_64/wsymbol_0001_sunny.png")!, placeholder: {Text(" ")}, image: { Image(uiImage: $0).resizable()})
+            if model.weather.request?.query != nil {
+                AsyncImage(url: URL(string: model.weather.current?.weatherIcons?.first ?? "https://cdn.worldweatheronline.com/images/wsymbols01_png_64/wsymbol_0001_sunny.png")!, placeholder: {Text(" ")}, image: { Image(uiImage: $0).resizable()})
                     .frame(width: 200, height: 200)
                 
                 
                 HStack (alignment: .top, spacing: 0) {
-                    Text("\(weather.current?.temperature ?? 0)")
+                    Text("\(model.weather.current?.temperature ?? 0)")
                         .font(.largeTitle)
                     Text("°")
-                    if let unit = weather.request?.unit {
+                    if let unit = model.weather.request?.unit {
                             switch unit {
                             case "m":
                                 Text("C").font(.largeTitle)
@@ -46,46 +44,46 @@ struct ContentView: View {
                     }
                 }
                 HStack {
-                    ForEach(weather.current?.weatherDescriptions ?? ["Unknown"], id: \.self) { description in
+                    ForEach(model.weather.current?.weatherDescriptions ?? ["Unknown"], id: \.self) { description in
                         Text(description)
                     }
                     .padding(.horizontal)
                 }
-                Text(weather.location?.name ?? " ")
+                Text(model.weather.location?.name ?? " ")
                     .font(.largeTitle)
-                Text(weather.location?.country ?? " ")
+                Text(model.weather.location?.country ?? " ")
                     .font(.title2)
-                if showDetails {
+                if model.showDetails {
                     VStack {
                         HStack {
                             Text("Wind Speed:")
                             Spacer()
-                            Text("\(weather.current?.windSpeed ?? 0)")
+                            Text("\(model.weather.current?.windSpeed ?? 0)")
                         }
                         HStack {
                             Text("Wind Degree:")
                             Spacer()
-                            Text("\(weather.current?.windDegree ?? 0)")
+                            Text("\(model.weather.current?.windDegree ?? 0)")
                         }
                         HStack {
                             Text("Wind Direction:")
                             Spacer()
-                            Text("\(weather.current?.windDir ?? "")")
+                            Text("\(model.weather.current?.windDir ?? "")")
                         }
                         HStack {
                             Text("Pressure:")
                             Spacer()
-                            Text("\(weather.current?.pressure ?? 0)")
+                            Text("\(model.weather.current?.pressure ?? 0)")
                         }
                         HStack {
                             Text("Precipitation:")
                             Spacer()
-                            Text("\(weather.current?.precip ?? 0)")
+                            Text("\(model.weather.current?.precip ?? 0)")
                         }
                         HStack {
                             Text("Humidity:")
                             Spacer()
-                            Text("\(weather.current?.humidity ?? 0)")
+                            Text("\(model.weather.current?.humidity ?? 0)")
                         }
                     }
                     .padding(.horizontal)
@@ -93,15 +91,15 @@ struct ContentView: View {
             }
             Spacer()
             Section(header: Text("Weather Options")) {
-                Toggle(isOn: $useCurrentLocation) {
+                Toggle(isOn: $model.useCurrentLocation) {
                     Text("Use Current Location")
                 }
                 .padding(.horizontal)
                 
-                if !useCurrentLocation {
+                if !model.useCurrentLocation {
                     HStack {
                         Text("Location:")
-                        TextField("City", text: $searchText)
+                        TextField("City", text: $model.searchText)
                             .textFieldStyle(.roundedBorder)
                             .focused($queryBoxFocused)
                     }
@@ -111,34 +109,31 @@ struct ContentView: View {
                 HStack {
                     Text("Units:")
                     Spacer()
-                    Picker(selection: $selectedUnits, label: Text("Units")) {
-                        ForEach(0 ... units.count-1, id: \.self) {
-                            Text(self.units[$0])
+                    Picker(selection: $model.selectedUnits, label: Text("Units")) {
+                        ForEach(0 ... model.units.count-1, id: \.self) {
+                            Text(self.model.units[$0])
                         }
                     }
                 }
                 .padding(.horizontal)
 
-                Toggle(isOn: $showDetails) {
+                Toggle(isOn: $model.showDetails) {
                     Text("Show details")
                 }
                 .padding(.horizontal)
             }
             Button {
-                Task {
-                    weather = await service.getWeather(unit: units[selectedUnits], searchText: searchText)
-                }
+                model.getWeather()
             } label: {
                 Text("Get Weather")
             }
             
         }
         .padding()
-        .task {
-        }
     }
 }
 
 #Preview {
     ContentView()
+        .environment(WeatherModel())
 }
