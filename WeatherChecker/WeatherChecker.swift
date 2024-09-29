@@ -9,11 +9,14 @@ import SwiftUI
 
 @main
 struct WeatherChecker: App {
+    
+    @AppStorage("onboarding") var needsOnboarding = true
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .fullScreenCover(isPresented: Binding.constant(true), onDismiss: {
-                    
+                .fullScreenCover(isPresented: $needsOnboarding, onDismiss: {
+                    needsOnboarding = false
                 }, content: {
                     OnboardingView()
                 })
