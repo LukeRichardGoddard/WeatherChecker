@@ -6,22 +6,33 @@
 //
 
 import Foundation
+import CoreLocation
 
 struct DataService {
     
     let apiKey = Bundle.main.infoDictionary?["API_KEY"] as? String
     
-    func getWeather(unit: String, searchText: String) async -> Weather {
+    func getWeather(unit: String, searchText: String, userLocation: CLLocationCoordinate2D?) async -> Weather {
         
         guard apiKey != nil else {
             return Weather()
         }
         
+        // Default lat long
+        var lat = -33.883
+        var long = 151.217
         
-        var query = "-33.883,151.217"
+        // User's lat long
+        if let userLocation = userLocation {
+            lat = userLocation.latitude
+            long = userLocation.longitude
+        }
         
-        print(searchText)
+        var query = "\(lat),\(long)"
         
+        //print(searchText)
+        
+        // Search text overrides location
         if searchText != "" {
             query = searchText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
         }

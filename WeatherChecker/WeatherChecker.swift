@@ -20,6 +20,7 @@ struct WeatherChecker: App {
                     needsOnboarding = false
                 }, content: {
                     OnboardingView()
+                        .environment(model)
                 })
                 .environment(model)
         }

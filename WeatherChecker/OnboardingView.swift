@@ -9,6 +9,7 @@ import SwiftUI
 
 struct OnboardingView: View {
     
+    @Environment(WeatherModel.self) var model
     @Environment(\.dismiss) var dismiss
     @State var selectedViewIndex = 0
     
@@ -30,6 +31,8 @@ struct OnboardingView: View {
                 .tag(0)
                 
                 OnboardingDetailsView(bgColor: Color.indigo, headline: "WeatherChecker", subHeadline: "Give the app permission to use your location", buttonAction: {
+                    // ask user for permission for location
+                    model.getUserLocation()
                     dismiss()
                 })
                 .tag(1)
