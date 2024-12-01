@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     
     @Environment(WeatherModel.self) var model
+    @State var id = UUID()
     
     @FocusState var queryBoxFocused: Bool
     
@@ -23,6 +24,7 @@ struct ContentView: View {
             if model.weather.request?.query != nil {
                 AsyncImage(url: URL(string: model.weather.current?.weatherIcons?.first ?? "https://cdn.worldweatheronline.com/images/wsymbols01_png_64/wsymbol_0001_sunny.png")!, placeholder: {Text(" ")}, image: { Image(uiImage: $0).resizable()})
                     .frame(width: 200, height: 200)
+                    .id(id)
                 
                 
                 HStack (alignment: .top, spacing: 0) {
@@ -124,6 +126,7 @@ struct ContentView: View {
             }
             Button {
                 model.getWeather()
+                id = UUID()
             } label: {
                 Text("Get Weather")
             }
