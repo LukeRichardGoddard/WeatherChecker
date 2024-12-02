@@ -30,8 +30,6 @@ struct DataService {
         
         var query = "\(lat),\(long)"
         
-        //print(searchText)
-        
         // Search text overrides location
         if searchText != "" {
             query = searchText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
