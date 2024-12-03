@@ -20,21 +20,22 @@ struct ContentView: View {
         
         @Bindable var model = model
         
-        VStack {
-            Text("Weather Checker")
-                .font(.largeTitle)
-            if model.weather.request?.query != nil {
-                AsyncImage(url: URL(string: model.weather.current?.weatherIcons?.first ?? "https://cdn.worldweatheronline.com/images/wsymbols01_png_64/wsymbol_0001_sunny.png")!, placeholder: {Text(" ")}, image: { Image(uiImage: $0).resizable()})
-                    .frame(width: 200, height: 200)
-                    .clipShape(.rect(cornerRadius: 15))
-                    .id(id)
-                
-                
-                HStack (alignment: .top, spacing: 0) {
-                    Text("\(model.weather.current?.temperature ?? 0)")
-                        .font(.largeTitle)
-                    Text("°")
-                    if let unit = model.weather.request?.unit {
+        NavigationStack {
+            VStack {
+                Text("Weather Checker")
+                    .font(.largeTitle)
+                if model.weather.request?.query != nil {
+                    AsyncImage(url: URL(string: model.weather.current?.weatherIcons?.first ?? "https://cdn.worldweatheronline.com/images/wsymbols01_png_64/wsymbol_0001_sunny.png")!, placeholder: {Text(" ")}, image: { Image(uiImage: $0).resizable()})
+                        .frame(width: 200, height: 200)
+                        .clipShape(.rect(cornerRadius: 15))
+                        .id(id)
+                    
+                    
+                    HStack (alignment: .top, spacing: 0) {
+                        Text("\(model.weather.current?.temperature ?? 0)")
+                            .font(.largeTitle)
+                        Text("°")
+                        if let unit = model.weather.request?.unit {
                             switch unit {
                             case "m":
                                 Text("C").font(.largeTitle)
@@ -46,96 +47,72 @@ struct ContentView: View {
                                 Text("").font(.largeTitle)
                                 Image(systemName: "pencil")
                             }
-                    }
-                }
-                HStack {
-                    ForEach(model.weather.current?.weatherDescriptions ?? ["Unknown"], id: \.self) { description in
-                        Text(description)
-                    }
-                    .padding(.horizontal)
-                }
-                Text(model.weather.location?.name ?? " ")
-                    .font(.largeTitle)
-                Text(model.weather.location?.country ?? " ")
-                    .font(.title2)
-                if model.showDetails {
-                    VStack {
-                        HStack {
-                            Text("Wind Speed:")
-                            Spacer()
-                            Text("\(model.weather.current?.windSpeed ?? 0)")
-                        }
-                        HStack {
-                            Text("Wind Degree:")
-                            Spacer()
-                            Text("\(model.weather.current?.windDegree ?? 0)")
-                        }
-                        HStack {
-                            Text("Wind Direction:")
-                            Spacer()
-                            Text("\(model.weather.current?.windDir ?? "")")
-                        }
-                        HStack {
-                            Text("Pressure:")
-                            Spacer()
-                            Text("\(model.weather.current?.pressure ?? 0)")
-                        }
-                        HStack {
-                            Text("Precipitation:")
-                            Spacer()
-                            Text("\(model.weather.current?.precip ?? 0)")
-                        }
-                        HStack {
-                            Text("Humidity:")
-                            Spacer()
-                            Text("\(model.weather.current?.humidity ?? 0)")
                         }
                     }
-                    .padding(.horizontal)
-                }
-            }
-            Spacer()
-            Section(header: Text("Weather Options")) {
-                Toggle(isOn: $model.useCurrentLocation) {
-                    Text("Use Current Location")
-                }
-                .padding(.horizontal)
-                
-                if !model.useCurrentLocation {
                     HStack {
-                        Text("Location:")
-                        TextField("City", text: $model.searchText)
-                            .textFieldStyle(.roundedBorder)
-                            .focused($queryBoxFocused)
+                        ForEach(model.weather.current?.weatherDescriptions ?? ["Unknown"], id: \.self) { description in
+                            Text(description)
+                        }
+                        .padding(.horizontal)
+                    }
+                    Text(model.weather.location?.name ?? " ")
+                        .font(.largeTitle)
+                    Text(model.weather.location?.country ?? " ")
+                        .font(.title2)
+                    
+                }
+                Spacer()
+                NavigationLink("Show details", destination: {
+                    WeatherDetailView()
+                })
+                Spacer()
+                Section(header: Text("Weather Options")) {
+                    Toggle(isOn: $model.useCurrentLocation) {
+                        Text("Use Current Location")
+                    }
+                    .onChange(of: model.useCurrentLocation, { oldValue, newValue in
+                        model.searchText = ""
+                        model.getWeather()
+                    })
+                    .padding(.horizontal)
+                    
+                    if !model.useCurrentLocation {
+                        HStack {
+                            Text("Location:")
+                            TextField("City", text: $model.searchText)
+                                .textFieldStyle(.roundedBorder)
+                                .focused($queryBoxFocused)
+                            
+                            Button {
+                                model.getWeather()
+                                id = UUID()
+                            } label: {
+                                Text("GO")
+                            }
+                        }
+                        .padding(.horizontal)
+                    }
+                    
+                    HStack {
+                        Text("Units:")
+                        Spacer()
+                        Picker(selection: $model.selectedUnits, label: Text("Units")) {
+                            ForEach(0 ... model.units.count-1, id: \.self) {
+                                Text(self.model.units[$0])
+                            }
+                        }
+                    }
+                    .padding(.horizontal)
+                    
+                    Toggle(isOn: $model.showDetails) {
+                        Text("Show details")
                     }
                     .padding(.horizontal)
                 }
                 
-                HStack {
-                    Text("Units:")
-                    Spacer()
-                    Picker(selection: $model.selectedUnits, label: Text("Units")) {
-                        ForEach(0 ... model.units.count-1, id: \.self) {
-                            Text(self.model.units[$0])
-                        }
-                    }
-                }
-                .padding(.horizontal)
-
-                Toggle(isOn: $model.showDetails) {
-                    Text("Show details")
-                }
-                .padding(.horizontal)
             }
-            Button {
-                model.getWeather()
-                id = UUID()
-            } label: {
-                Text("Get Weather")
-            }
-            
+            .padding()
         }
-        .padding()
     }
 }
 

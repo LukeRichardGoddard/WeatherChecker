@@ -17,6 +17,7 @@
 		C38B7BB52C9EAC9600CAD4A0 /* AsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38B7BB42C9EAC9600CAD4A0 /* AsyncImage.swift */; };
 		C3901C9C2CA2C788005B6E37 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3901C9B2CA2C788005B6E37 /* OnboardingView.swift */; };
 		C3901C9E2CA2CDBB005B6E37 /* OnboardingDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3901C9D2CA2CDBB005B6E37 /* OnboardingDetailsView.swift */; };
+		C3A4EDA62CFF18BF0007504A /* WeatherDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A4EDA52CFF18BF0007504A /* WeatherDetailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +34,7 @@
 		C38B7BB42C9EAC9600CAD4A0 /* AsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncImage.swift; sourceTree = "<group>"; };
 		C3901C9B2CA2C788005B6E37 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		C3901C9D2CA2CDBB005B6E37 /* OnboardingDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingDetailsView.swift; sourceTree = "<group>"; };
+		C3A4EDA52CFF18BF0007504A /* WeatherDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +78,7 @@
 				C38B7BA32C9E948E00CAD4A0 /* Preview Content */,
 				C38B7BAB2C9E956600CAD4A0 /* Config.xcconfig */,
 				C38B7BB42C9EAC9600CAD4A0 /* AsyncImage.swift */,
+				C3A4EDA52CFF18BF0007504A /* WeatherDetailView.swift */,
 			);
 			path = WeatherChecker;
 			sourceTree = "<group>";
@@ -173,6 +176,7 @@
 				C38B7BB12C9E9F9C00CAD4A0 /* WeatherModel.swift in Sources */,
 				C38B7B9E2C9E948B00CAD4A0 /* WeatherChecker.swift in Sources */,
 				C38B7BB52C9EAC9600CAD4A0 /* AsyncImage.swift in Sources */,
+				C3A4EDA62CFF18BF0007504A /* WeatherDetailView.swift in Sources */,
 				C38B7BB32C9EA09D00CAD4A0 /* DataService.swift in Sources */,
 				C3901C9C2CA2C788005B6E37 /* OnboardingView.swift in Sources */,
 			);
