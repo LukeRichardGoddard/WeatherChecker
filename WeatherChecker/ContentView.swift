@@ -103,11 +103,6 @@ struct ContentView: View {
                         }
                     }
                     .padding(.horizontal)
-                    
-                    Toggle(isOn: $model.showDetails) {
-                        Text("Show details")
-                    }
-                    .padding(.horizontal)
                 }
                 
             }
