@@ -13,6 +13,7 @@ struct ContentView: View {
     
     // the below is to force the image to refresh when getting a new location
     @State var id = UUID()
+    @State var tempText = " "
     
     @FocusState var queryBoxFocused: Bool
     
@@ -32,22 +33,11 @@ struct ContentView: View {
                     
                     
                     HStack (alignment: .top, spacing: 0) {
-                        Text("\(model.weather.current?.temperature ?? 0)")
+                        Text(tempText)
                             .font(.largeTitle)
-                        Text("°")
-                        if let unit = model.weather.request?.unit {
-                            switch unit {
-                            case "m":
-                                Text("C").font(.largeTitle)
-                            case "s":
-                                Text("K").font(.largeTitle)
-                            case "f":
-                                Text("F").font(.largeTitle)
-                            default:
-                                Text("").font(.largeTitle)
-                                Image(systemName: "pencil")
-                            }
-                        }
+                    }
+                    .onAppear() {
+                        updateTemp()
                     }
                     HStack {
                         ForEach(model.weather.current?.weatherDescriptions ?? ["Unknown"], id: \.self) { description in
@@ -101,6 +91,9 @@ struct ContentView: View {
                                 Text(self.model.units[$0])
                             }
                         }
+                        .onChange(of: model.selectedUnits) { oldValue, newValue in
+                            updateTemp()
+                        }
                     }
                     .padding(.horizontal)
                 }
@@ -108,6 +101,20 @@ struct ContentView: View {
             }
             .padding()
         }
+    }
+    
+    func updateTemp() {
+        switch model.selectedUnits {
+        case 0:
+            tempText = "\(model.weather.current?.temperature ?? 0)°C"
+        case 1:
+            tempText = "\(UnitConverter.convertMetricToFahrenheit(metric: Double(model.weather.current?.temperature ?? 0)))°F"
+        case 2:
+            tempText = "\(UnitConverter.convertMetricToScientific(metric: Double(model.weather.current?.temperature ?? 0))) °K"
+        default:
+            tempText = "\(model.weather.current?.temperature ?? 0)°C"
+        }
+    
     }
 }
 

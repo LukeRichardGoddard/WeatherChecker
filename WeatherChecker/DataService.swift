@@ -35,7 +35,7 @@ struct DataService {
             query = searchText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
         }
         
-        if let url = URL(string: "https://api.weatherstack.com/current?access_key=\(apiKey!)&query=\(query)&units=\(unit.lowercased().first ?? "m")") {
+        if let url = URL(string: "https://api.weatherstack.com/current?access_key=\(apiKey!)&query=\(query)&units=m") {
             
             let request = URLRequest(url: url)
             
