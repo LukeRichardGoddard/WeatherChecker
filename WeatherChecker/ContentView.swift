@@ -78,6 +78,7 @@ struct ContentView: View {
                                 id = UUID()
                             } label: {
                                 Text("GO")
+                                    .bold()
                             }
                         }
                         .padding(.horizontal)
