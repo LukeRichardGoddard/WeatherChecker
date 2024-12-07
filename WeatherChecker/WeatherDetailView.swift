@@ -63,6 +63,8 @@ struct WeatherDetailView: View {
                     Text("Wind Direction:")
                     Spacer()
                     Text("\(model.weather.current?.windDir ?? "")")
+                    Image(systemName: "arrow.up")
+                        .rotationEffect(.degrees(WindDirections.compassToRotation(direction: model.weather.current?.windDir ?? "")))
                 }
                 HStack {
                     Text("UV Index:")
