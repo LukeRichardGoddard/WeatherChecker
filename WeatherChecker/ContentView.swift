@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     
     @Environment(WeatherModel.self) var model
+    @Environment(\.colorScheme) var colorScheme
     
     // the below is to force the image to refresh when getting a new location
     @State var id = UUID()
@@ -23,90 +24,104 @@ struct ContentView: View {
         
         NavigationStack {
             GeometryReader { geo in
-                ScrollView {
-                    VStack {
-                        Text("Weather Checker")
-                            .font(.largeTitle)
-                        if model.weather.request?.query != nil {
-                            AsyncImage(url: URL(string: model.weather.current?.weatherIcons?.first ?? "https://cdn.worldweatheronline.com/images/wsymbols01_png_64/wsymbol_0001_sunny.png")!, placeholder: {Text(" ")}, image: { Image(uiImage: $0).resizable()})
-                                .frame(width: 200, height: 200)
-                                .clipShape(.rect(cornerRadius: 15))
-                                .id(id)
-                            
-                            
-                            HStack (alignment: .top, spacing: 0) {
-                                Text(tempText)
-                                    .font(.largeTitle)
-                            }
-                            .onAppear() {
-                                updateTemp()
-                            }
-                            HStack {
-                                ForEach(model.weather.current?.weatherDescriptions ?? ["Unknown"], id: \.self) { description in
-                                    Text(description)
-                                }
-                                .padding(.horizontal)
-                            }
-                            Text(model.weather.location?.name ?? " ")
+                ZStack {
+                    Color("Background")
+                        .ignoresSafeArea()
+                    
+                    ScrollView {
+                        VStack {
+                            Text("Weather Checker")
                                 .font(.largeTitle)
-                            Text(model.weather.location?.country ?? " ")
-                                .font(.title2)
-                            
-                        }
-                        Spacer()
-                        NavigationLink("Show details", destination: {
-                            WeatherDetailView()
-                        })
-                        Spacer()
-                        Section(header: Text("Weather Options")) {
-                            Toggle(isOn: $model.useCurrentLocation) {
-                                Text("Use Current Location")
-                            }
-                            .onChange(of: model.useCurrentLocation, { oldValue, newValue in
-                                model.searchText = ""
-                                model.getWeather()
-                            })
-                            .padding(.horizontal)
-                            
-                            if !model.useCurrentLocation {
-                                HStack {
-                                    Text("Location:")
-                                    TextField("City", text: $model.searchText)
-                                        .textFieldStyle(.roundedBorder)
-                                        .focused($queryBoxFocused)
-                                    
-                                    Button {
-                                        queryBoxFocused = false
-                                        model.getWeather()
-                                        id = UUID()
-                                    } label: {
-                                        Text("GO")
-                                            .bold()
-                                    }
+                            if model.weather.request?.query != nil {
+                                AsyncImage(url: URL(string: model.weather.current?.weatherIcons?.first ?? "https://cdn.worldweatheronline.com/images/wsymbols01_png_64/wsymbol_0001_sunny.png")!, placeholder: {Text(" ")}, image: { Image(uiImage: $0).resizable()})
+                                    .frame(width: 200, height: 200)
+                                    .clipShape(.rect(cornerRadius: 15))
+                                    .id(id)
+                                
+                                
+                                HStack (alignment: .top, spacing: 0) {
+                                    Text(tempText)
+                                        .font(.largeTitle)
                                 }
-                                .padding(.horizontal)
-                            }
-                            
-                            HStack {
-                                Text("Units:")
-                                Spacer()
-                                Picker(selection: $model.selectedUnits, label: Text("Units")) {
-                                    ForEach(0 ... model.units.count-1, id: \.self) {
-                                        Text(self.model.units[$0])
-                                    }
-                                }
-                                .onChange(of: model.selectedUnits) { oldValue, newValue in
+                                .onAppear() {
                                     updateTemp()
                                 }
+                                HStack {
+                                    ForEach(model.weather.current?.weatherDescriptions ?? ["Unknown"], id: \.self) { description in
+                                        Text(description)
+                                    }
+                                    .padding(.horizontal)
+                                }
+                                Text(model.weather.location?.name ?? " ")
+                                    .font(.largeTitle)
+                                Text(model.weather.location?.country ?? " ")
+                                    .font(.title2)
+                                
                             }
-                            .padding(.horizontal)
+                            Spacer()
+                            NavigationLink {
+                                WeatherDetailView()
+                            } label: {
+                                Text("Show details")
+                            }
+                            .padding()
+                            .background(colorScheme == .light ? .white : .black)
+                            .foregroundColor(.primary)
+                            .cornerRadius(10)
+                            Spacer()
+                            Section(header: Text("Weather Options")) {
+                                Toggle(isOn: $model.useCurrentLocation) {
+                                    Text("Use Current Location")
+                                }
+                                .onChange(of: model.useCurrentLocation, { oldValue, newValue in
+                                    model.searchText = ""
+                                    model.getWeather()
+                                })
+                                .padding(.horizontal)
+                                
+                                if !model.useCurrentLocation {
+                                    HStack {
+                                        Text("Location:")
+                                        TextField("City", text: $model.searchText)
+                                            .textFieldStyle(.roundedBorder)
+                                            .focused($queryBoxFocused)
+                                        
+                                        Button {
+                                            queryBoxFocused = false
+                                            model.getWeather()
+                                            id = UUID()
+                                        } label: {
+                                            Text("GO")
+                                                .bold()
+                                        }
+                                        .buttonStyle(.borderedProminent)
+                                    }
+                                    .padding(.horizontal)
+                                }
+                                
+                                HStack {
+                                    Text("Units:")
+                                    Spacer()
+                                    Picker(selection: $model.selectedUnits, label: Text("Units")
+                                        ) {
+                                        ForEach(0 ... model.units.count-1, id: \.self) {
+                                            Text(self.model.units[$0])
+                                        }
+                                    }
+                                    .accentColor(colorScheme == .dark ? .white : .black)
+                                    .onChange(of: model.selectedUnits) { oldValue, newValue in
+                                        updateTemp()
+                                    }
+                                }
+                                .padding(.horizontal)
+                            }
+                            
                         }
-                        
+                        .padding()
+                        .frame(minHeight: geo.size.height)
                     }
-                    .padding()
-                    .frame(minHeight: geo.size.height)
+                    .frame(width: geo.size.width)
                 }
-                .frame(width: geo.size.width)
             }
         }
     }
