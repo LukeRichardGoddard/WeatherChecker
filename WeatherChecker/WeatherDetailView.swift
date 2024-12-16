@@ -10,11 +10,12 @@ import SwiftUI
 struct WeatherDetailView: View {
     
     @Environment(WeatherModel.self) var model
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         ZStack {
         
-            Color("Background")
+            Color(colorScheme == .dark ? "DarkBackground" : "LightBackground")
                 .ignoresSafeArea()
             
             VStack {

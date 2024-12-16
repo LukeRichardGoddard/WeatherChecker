@@ -25,7 +25,7 @@ struct ContentView: View {
         NavigationStack {
             GeometryReader { geo in
                 ZStack {
-                    Color("Background")
+                    Color(colorScheme == .dark ? "DarkBackground" : "LightBackground")
                         .ignoresSafeArea()
                     
                     ScrollView {
@@ -36,6 +36,10 @@ struct ContentView: View {
                                 AsyncImage(url: URL(string: model.weather.current?.weatherIcons?.first ?? "https://cdn.worldweatheronline.com/images/wsymbols01_png_64/wsymbol_0001_sunny.png")!, placeholder: {Text(" ")}, image: { Image(uiImage: $0).resizable()})
                                     .frame(width: 200, height: 200)
                                     .clipShape(.rect(cornerRadius: 15))
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 15)
+                                            .stroke(.black, lineWidth: 3)
+                                    )
                                     .id(id)
                                 
                                 
@@ -63,8 +67,15 @@ struct ContentView: View {
                                 WeatherDetailView()
                             } label: {
                                 Text("Show details")
+                                    .padding()
+                                    .background(
+                                        RoundedRectangle(
+                                            cornerRadius: 15,
+                                            style: .continuous
+                                        )
+                                        .stroke(colorScheme == .dark ? .white : .black, lineWidth: 5)
+                                    )
                             }
-                            .padding()
                             .background(colorScheme == .light ? .white : .black)
                             .foregroundColor(.primary)
                             .cornerRadius(10)
@@ -76,6 +87,7 @@ struct ContentView: View {
                                 .onChange(of: model.useCurrentLocation, { oldValue, newValue in
                                     model.searchText = ""
                                     model.getWeather()
+                                    id = UUID()
                                 })
                                 .padding(.horizontal)
                                 
